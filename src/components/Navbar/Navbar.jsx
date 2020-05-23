@@ -8,22 +8,22 @@ class Navbar extends React.Component {
       <nav className={styles.nav}>
         <div className={styles.item}>
           <NavLink to="/" className={styles.link}>
-            OPPSKRIFTER
+            Menu
           </NavLink>
         </div>
         <div className={styles.item}>
           <NavLink to="/" className={styles.link}>
-            TRINN-FOR-TRINN-VIDEO
+            Recipe
           </NavLink>
         </div>
         <div className={styles.item}>
           <NavLink to="/" className={styles.link}>
-            ARTIKLER
+            Video
           </NavLink>
         </div>
         <div className={styles.item}>
           <NavLink to="/" className={styles.link}>
-            POPULÆRT NÅ
+            Totorial
           </NavLink>
         </div>
       </nav>
