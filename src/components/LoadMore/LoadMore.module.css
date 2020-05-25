@@ -1,0 +1,13 @@
+.button{
+    display: inline-block;
+    margin: 50px 50px;
+    padding: 10px 30px;
+    position: relative;
+    border: 1px solid #666666;
+    color: black;
+    transition: .4s;
+}
+.button:hover{
+    border-color: darkorange;
+    color: darkorange;
+}

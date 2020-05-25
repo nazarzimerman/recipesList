@@ -23,7 +23,7 @@ class Navbar extends React.Component {
         </div>
         <div className={styles.item}>
           <NavLink to="/" className={styles.link}>
-            Totorial
+            Tutorial
           </NavLink>
         </div>
       </nav>
