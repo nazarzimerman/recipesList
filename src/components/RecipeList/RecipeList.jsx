@@ -2,13 +2,12 @@ import React from "react";
 import styles from "./RecipeList.module.css";
 import RecipeService from "../../services/RecipeService.js";
 import {Link} from "react-router-dom";
-import Search from "../Search/Search";
+import {connect} from 'react-redux';
 import LoadMore from "../LoadMore/LoadMore.jsx";
 
 class RecipeList extends React.Component {
     state = {
         recipes: [],
-        search: "",
         visibleRecipeCount: 4,
     };
 
@@ -52,18 +51,27 @@ class RecipeList extends React.Component {
 
 
     render() {
-        let filteredRecipes = this.state.recipes.filter(el => (el.title.toLowerCase().includes(this.state.search.toLowerCase())))
+        let filteredRecipes = this.state.recipes.filter(el => {
+            return el.title.toLowerCase().includes(this.props.search.toLowerCase())
+        });
 
         const fourFilterRecipes = filteredRecipes.slice(0, this.state.visibleRecipeCount);
 
         return (
             <div className={styles.headerContainer}>
-                <Search onChange={this.handleRecipeSearch}/>
+
                 {fourFilterRecipes.map(this.renderRecipe)}
-                <LoadMore onClick={this.handleLoadRecipeClick}/>
+                {(filteredRecipes.length > this.state.visibleRecipeCount) && <LoadMore onClick={this.handleLoadRecipeClick}/>}
             </div>
         );
     }
 }
 
-export default RecipeList;
+const mapStateToProps = state => {
+    return {
+        search: state.search.term
+    }
+};
+
+
+export default connect(mapStateToProps)(RecipeList);
