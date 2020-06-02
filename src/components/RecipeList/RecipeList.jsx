@@ -1,59 +1,69 @@
 import React from "react";
 import styles from "./RecipeList.module.css";
 import RecipeService from "../../services/RecipeService.js";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Search from "../Search/Search";
+import LoadMore from "../LoadMore/LoadMore.jsx";
 
 class RecipeList extends React.Component {
-  state = {
-    recipes: [],
-    search: ""
-  };
+    state = {
+        recipes: [],
+        search: "",
+        visibleRecipeCount: 4,
+    };
 
-  componentDidMount() {
-    const recipeService = new RecipeService();
-    let recipes = recipeService.getAll();
-    this.setState({ recipes: recipes });
-  }
+    componentDidMount() {
+        const recipeService = new RecipeService();
+        let recipes = recipeService.getAll();
+        this.setState({recipes: recipes});
+    }
 
-  renderRecipe = (el) => {
-    return (
-      <Link className={styles.link} to={"/" + el.id}>
-        <div className={styles.container}>
-          <img className={styles.img} src={el.img} />
-          <div className={styles.box}>
-            <h2 className={styles.title}>{el.title}</h2>
-            <ul className={styles.ingredients}>
-              {el.ingredientsList.map((el) => (
-                <li className={styles.list}>
-                  {el.title}
-                  {el.amount}
-                  {el.units}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Link>
-    );
-  };
+    renderRecipe = (el) => {
+        return (
+            <div className={styles.container}>
+                <Link className={styles.link} to={"/" + el.id}>
+                    <div className={styles.imgWrapper}>
+                        <img className={styles.img} src={el.img}/>
+                    </div>
+                    <div className={styles.box}>
+                        <h2 className={styles.title}>{el.title}</h2>
+                        <ul className={styles.ingredients}>
+                            {el.ingredientsList.map((el) => (
+                                <li className={styles.list}>
+                                    {el.title}
+                                    {el.amount}
+                                    {el.units}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </Link>
+            </div>
+        );
+    };
 
-  handleRecipeSearch = (value) => {
-    this.setState({search:value})
-  };
+    handleRecipeSearch = (value) => {
+        this.setState({search: value})
+    };
+
+    handleLoadRecipeClick = () => {
+        this.setState({visibleRecipeCount: this.state.visibleRecipeCount + 4})
+    };
 
 
+    render() {
+        let filteredRecipes = this.state.recipes.filter(el => (el.title.toLowerCase().includes(this.state.search.toLowerCase())))
 
+        const fourFilterRecipes = filteredRecipes.slice(0, this.state.visibleRecipeCount);
 
-  render() {
-      let  filteredRecipes =  this.state.recipes.filter(el => (el.title.toLowerCase().includes(this.state.search.toLowerCase()) ))
-    return (
-      <div className={styles.headerContainer}>
-        <Search onChange={this.handleRecipeSearch}  />
-        {filteredRecipes.map(this.renderRecipe)}
-      </div>
-    );
-  }
+        return (
+            <div className={styles.headerContainer}>
+                <Search onChange={this.handleRecipeSearch}/>
+                {fourFilterRecipes.map(this.renderRecipe)}
+                <LoadMore onClick={this.handleLoadRecipeClick}/>
+            </div>
+        );
+    }
 }
 
 export default RecipeList;
